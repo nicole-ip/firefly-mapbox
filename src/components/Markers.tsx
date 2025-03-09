@@ -1,19 +1,24 @@
 import { Marker } from "react-map-gl/mapbox";
-import { useEvents } from "./EventsContext";
+import { useIncidents } from "./IncidentsContext";
 import { AlertCircle } from "lucide-react";
 import { getSeverityColor } from "@/lib/helpers";
 
 export const Markers = () => {
-  const events = useEvents();
+  const { incidents, setSelectedIncident } = useIncidents();
 
   return (
     <>
-      {events.map((event) => {
+      {incidents.map((incident) => {
         return (
-          <Marker longitude={event.location[0]} latitude={event.location[1]}>
+          <Marker
+            key={incident.id}
+            longitude={incident.location[0]}
+            latitude={incident.location[1]}
+            onClick={() => setSelectedIncident(incident.id)}
+          >
             <AlertCircle
               className={`w-6 h-6 ${getSeverityColor(
-                event.severity
+                incident.severity
               )} rounded-full`}
             />
           </Marker>

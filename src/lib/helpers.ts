@@ -1,9 +1,9 @@
-import { EventType } from "@/components/EventsContext";
+import { IncidentType } from "@/components/IncidentsContext";
 export type BoundValues = [[number, number], [number, number]];
 
 const NUMBER_OF_EVENT_TYPES = 3;
 
-enum EventSeverity {
+enum IncidentSeverity {
   LOW,
   MEDIUM,
   HIGH,
@@ -11,7 +11,7 @@ enum EventSeverity {
 
 const generateRandomEventType = () => {
   const idx = Math.floor(Math.random() * NUMBER_OF_EVENT_TYPES);
-  return Object.values(EventType)[idx];
+  return Object.values(IncidentType)[idx];
 };
 
 const generateRandomCoords = (bounds: BoundValues) => {
@@ -48,13 +48,13 @@ export const generateRandomEvents = (bounds: BoundValues) => {
   return events;
 };
 
-export const getSeverityColor = (severity: EventSeverity) => {
+export const getSeverityColor = (severity: IncidentSeverity) => {
   switch (severity) {
-    case EventSeverity.HIGH:
+    case IncidentSeverity.HIGH:
       return "bg-red-500";
-    case EventSeverity.MEDIUM:
+    case IncidentSeverity.MEDIUM:
       return "bg-yellow-500";
-    case EventSeverity.LOW:
+    case IncidentSeverity.LOW:
       return "bg-blue-500";
     default:
       return "bg-gray-500";

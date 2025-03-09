@@ -5,7 +5,7 @@ import "./App.css";
 
 import { EventSheet } from "@/components/EventSheet";
 import { Markers } from "@/components/Markers";
-import EventsProvider from "@/components/EventsContext";
+import IncidentsProvider from "@/components/IncidentsContext";
 
 function App() {
   const geoControlRef = useRef<mapboxgl.GeolocateControl>(null);
@@ -23,10 +23,10 @@ function App() {
       onMoveEnd={() => setIsMoveEnd(true)}
     >
       <GeolocateControl ref={geoControlRef} />
-      <EventsProvider isMoveEnd={isMoveEnd}>
+      <IncidentsProvider isMoveEnd={isMoveEnd}>
         <EventSheet />
         <Markers />
-      </EventsProvider>
+      </IncidentsProvider>
     </Map>
   );
 }
