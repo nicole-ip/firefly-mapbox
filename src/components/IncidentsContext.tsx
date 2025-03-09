@@ -16,7 +16,7 @@ enum IncidentSeverity {
 }
 
 export interface Incident {
-  id: number;
+  id: string;
   title: string;
   description: string;
   type: IncidentType;
@@ -60,16 +60,32 @@ export default function IncidentsProvider({
     setIncidents(mockEvents);
   }, [map, isMoveEnd]);
 
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      const nextIdx = incidents.length;
-      //
-    }, 5000);
+  // useEffect(() => {
+  //   let counter = 0;
 
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, []);
+  //   const intervalId = setInterval(() => {
+  //     const timestamp = Date.now();
+  //     const uniqueId = `${timestamp}-${counter}`; // Combine timestamp and counter
+  //     counter += 1;
+
+  //     const newIncident: Incident = {
+  //       id: uniqueId, // Use the unique ID
+  //       title: "Suspicious Activity Reported",
+  //       description:
+  //         "Multiple reports of suspicious individuals in the area. Police are investigating",
+  //       type: IncidentType.CRIME,
+  //       location: [-73.98325528155169, 40.73123722580573],
+  //       timestamp: new Date(timestamp),
+  //       severity: IncidentSeverity.LOW,
+  //     };
+
+  //     setIncidents((prev) => [...prev, newIncident]);
+  //   }, 10000);
+
+  //   return () => {
+  //     clearInterval(intervalId);
+  //   };
+  // }, []);
 
   const providerValue = {
     incidents,
