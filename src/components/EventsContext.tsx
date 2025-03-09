@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { generateRandomEvents } from "@/lib/helpers";
 import { useMap } from "react-map-gl/mapbox";
+import { mockEvents } from "@/lib/mockEvents";
 
 export enum EventType {
   CRIME = "crime",
@@ -14,6 +15,7 @@ enum EventSeverity {
   HIGH,
 }
 interface Event {
+  id: number;
   title: string;
   description: string;
   type: EventType;
@@ -43,11 +45,11 @@ export default function EventsProvider({
   useEffect(() => {
     if (!map) return;
     if (!isMoveEnd) return;
-    console.log(isMoveEnd);
-    const bounds = map.getBounds();
-    const boundsArray = bounds?.toArray();
-    const randomEvents = generateRandomEvents(boundsArray);
-    setEvents(randomEvents);
+    // console.log(isMoveEnd);
+    // const bounds = map.getBounds();
+    // const boundsArray = bounds?.toArray();
+    // const randomEvents = generateRandomEvents(boundsArray);
+    setEvents(mockEvents);
   }, [map, isMoveEnd]);
 
   console.log(events);

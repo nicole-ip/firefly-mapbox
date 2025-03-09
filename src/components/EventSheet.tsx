@@ -21,10 +21,13 @@ export const EventSheet = () => {
         <SheetHeader>
           <SheetTitle>Live Events Near You</SheetTitle>
           <SheetDescription>You can see blah blah</SheetDescription>
-          <div className="flex flex-col gap-3 mt-4 h-200 overflow-y-scroll">
+          <div className="flex flex-col-reverse gap-3 mt-4 h-200 overflow-y-scroll">
             {events.map((event) => {
               return (
-                <div className="border-1 border-gray-500 p-4 rounded-md">
+                <div
+                  key={event.id}
+                  className="border-1 border-gray-500 p-4 rounded-md"
+                >
                   <h1 className="inline-flex gap-2 font-bold text-lg">
                     {event.title}
                     <AlertCircle
