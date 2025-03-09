@@ -1,37 +1,33 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Map, { GeolocateControl } from "react-map-gl/mapbox";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "./App.css";
 
 import { EventSheet } from "@/components/EventSheet";
+import { Markers } from "@/components/Markers";
+import EventsProvider from "@/components/EventsContext";
 
 function App() {
   const geoControlRef = useRef<mapboxgl.GeolocateControl>(null);
-
-  const handleMapLoad = () => {
-    // if (geoControlRef.current) {
-    //   geoControlRef.current.trigger();
-    // }
-    // and then set alternative location if geolocator doesn't work
-    // or maybe just use initial
-  };
+  const [isMoveEnd, setIsMoveEnd] = useState<boolean>(false);
 
   return (
-    <div className="flex w-full h-full">
-      <EventSheet />
-      <Map
-        mapboxAccessToken={import.meta.env.VITE_MAPBOX_ACCESS_TOKEN}
-        initialViewState={{
-          longitude: -74.0242,
-          latitude: 40.6941,
-          zoom: 14,
-        }}
-        mapStyle="mapbox://styles/mapbox/streets-v9"
-        onLoad={handleMapLoad}
-      >
-        <GeolocateControl ref={geoControlRef} />
-      </Map>
-    </div>
+    <Map
+      mapboxAccessToken={import.meta.env.VITE_MAPBOX_ACCESS_TOKEN}
+      initialViewState={{
+        longitude: -73.989723,
+        latitude: 40.741112,
+        zoom: 14,
+      }}
+      mapStyle="mapbox://styles/mapbox/streets-v9"
+      onMoveEnd={() => setIsMoveEnd(true)}
+    >
+      <GeolocateControl ref={geoControlRef} />
+      <EventsProvider isMoveEnd={isMoveEnd}>
+        <EventSheet />
+        <Markers />
+      </EventsProvider>
+    </Map>
   );
 }
 
