@@ -2,11 +2,24 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { generateRandomEvents } from "@/lib/helpers";
 import { useMap } from "react-map-gl/mapbox";
 
+export enum EventType {
+  CRIME = "crime",
+  EMERGENCY = "emergency",
+  WEATHER = "weather",
+}
+
+enum EventSeverity {
+  LOW,
+  MEDIUM,
+  HIGH,
+}
 interface Event {
-  name: string;
+  title: string;
   description: string;
+  type: EventType;
   location: [number, number];
-  icon: string;
+  timestamp: Date;
+  severity: EventSeverity;
 }
 
 const EventsContext = createContext<Event[] | null>(null);

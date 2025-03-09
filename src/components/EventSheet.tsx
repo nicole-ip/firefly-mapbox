@@ -7,6 +7,9 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { useEvents } from "./EventsContext";
+import { formatDistanceToNow } from "date-fns";
+import { AlertCircle } from "lucide-react";
+import { getSeverityColor } from "@/lib/helpers";
 
 export const EventSheet = () => {
   const events = useEvents();
@@ -22,8 +25,18 @@ export const EventSheet = () => {
             {events.map((event) => {
               return (
                 <div className="border-1 border-gray-500 p-4 rounded-md">
-                  <h1>{event.name}</h1>
+                  <h1 className="inline-flex gap-2 font-bold text-lg">
+                    {event.title}
+                    <AlertCircle
+                      className={`w-6 h-6 ${getSeverityColor(
+                        event.severity
+                      )} rounded-full`}
+                    />
+                  </h1>
                   <p>{event.description}</p>
+                  <p className="text-sm text-gray-600 mb-2">{`${formatDistanceToNow(
+                    event.timestamp
+                  )} ago`}</p>
                 </div>
               );
             })}

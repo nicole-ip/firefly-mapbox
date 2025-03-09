@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Map, { GeolocateControl } from "react-map-gl/mapbox";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "./App.css";
@@ -19,7 +19,7 @@ function App() {
         latitude: 40.741112,
         zoom: 14,
       }}
-      mapStyle="mapbox://styles/mapbox/streets-v9"
+      mapStyle="mapbox://styles/mapbox/dark-v11"
       onMoveEnd={() => setIsMoveEnd(true)}
     >
       <GeolocateControl ref={geoControlRef} />
