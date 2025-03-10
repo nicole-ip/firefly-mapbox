@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useMap } from "react-map-gl/mapbox";
-import { mockEvents } from "@/lib/mockEvents";
+import { mockIncidents } from "@/lib/mockIncidents";
 import { Incident } from "@/lib/models";
 import { createNewIncident } from "@/lib/helpers";
 
@@ -36,16 +36,22 @@ export default function IncidentsProvider({
     null
   );
 
+  /**
+   * After the map is done moving we set the initial mock incidents
+   * They are all centered around Manhattan.
+   * I could have used some library like Faker-js to generate the mock data within the bounds of the map.
+   */
   useEffect(() => {
-    if (!map) return;
-    if (!isMoveEnd) return;
-    // console.log(isMoveEnd);
-    // const bounds = map.getBounds();
-    // const boundsArray = bounds?.toArray();
-    // const randomEvents = generateRandomEvents(boundsArray);
-    setIncidents(mockEvents);
+    if (!map || !isMoveEnd) return;
+    setIncidents(mockIncidents);
   }, [map, isMoveEnd]);
 
+  /**
+   * Generate a new incident every 20 seconds.
+   * In a larger application I would move this out of context and use a state management tool instead.
+   * As every time I generate a new incident it rerenders all its children.
+   * However I thought this was appropriate for a smaller app.
+   */
   useEffect(() => {
     const intervalId = setInterval(() => {
       const newIncident: Incident = createNewIncident();

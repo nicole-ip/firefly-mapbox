@@ -1,6 +1,6 @@
 import { Incident } from "./models";
 
-export const mockEvents: Incident[] = [
+export const mockIncidents: Incident[] = [
   {
     id: 2,
     title: "Suspicious Activity Reported",

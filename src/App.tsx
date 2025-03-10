@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Map, { GeolocateControl } from "react-map-gl/mapbox";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "./App.css";
@@ -11,6 +11,12 @@ import { NewIncident } from "@/components/NewIncident";
 function App() {
   const geoControlRef = useRef<mapboxgl.GeolocateControl>(null);
   const [isMoveEnd, setIsMoveEnd] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (geoControlRef.current) {
+      geoControlRef.current.trigger();
+    }
+  }, []);
 
   return (
     <Map
