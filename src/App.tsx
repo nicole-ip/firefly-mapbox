@@ -12,12 +12,6 @@ function App() {
   const geoControlRef = useRef<mapboxgl.GeolocateControl>(null);
   const [isMoveEnd, setIsMoveEnd] = useState<boolean>(false);
 
-  useEffect(() => {
-    if (geoControlRef.current) {
-      geoControlRef.current.trigger();
-    }
-  }, []);
-
   return (
     <Map
       mapboxAccessToken={import.meta.env.VITE_MAPBOX_ACCESS_TOKEN}
