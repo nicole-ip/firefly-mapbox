@@ -1,17 +1,19 @@
-import { IncidentType } from "@/components/IncidentsContext";
+import { IncidentType, IncidentSeverity } from "@/lib/models";
+import { mockEvents } from "@/lib/mockEvents";
+
 export type BoundValues = [[number, number], [number, number]];
 
-const NUMBER_OF_EVENT_TYPES = 3;
-
-enum IncidentSeverity {
-  LOW,
-  MEDIUM,
-  HIGH,
-}
+const incidentTypes: IncidentType[] = [
+  "crime",
+  "emergency",
+  "weather",
+  "traffic",
+  "hazard",
+];
 
 const generateRandomEventType = () => {
-  const idx = Math.floor(Math.random() * NUMBER_OF_EVENT_TYPES);
-  return Object.values(IncidentType)[idx];
+  const idx = Math.floor(Math.random() * incidentTypes.length);
+  return Object.values(incidentTypes)[idx];
 };
 
 const generateRandomCoords = (bounds: BoundValues) => {
@@ -20,11 +22,6 @@ const generateRandomCoords = (bounds: BoundValues) => {
   const randomLat = Math.random() * (maxLat - minLat) + minLat;
 
   return [randomLong, randomLat];
-};
-
-// generate a random minute between 0 to 60(?) can change
-const generateRandomTime = () => {
-  return Math.floor(Math.random() * 60);
 };
 
 const generateRandomNumber = (max: number) => {
@@ -40,8 +37,8 @@ export const generateRandomEvents = (bounds: BoundValues) => {
       description: "Something happening here",
       type: generateRandomEventType(),
       location: generateRandomCoords(bounds),
-      timestamp: new Date(Date.now() - 1000 * 60 * generateRandomTime()),
-      severity: generateRandomNumber(3),
+      timestamp: new Date(Date.now() - 1000 * 60 * generateRandomNumber(60)),
+      severity: "low",
     });
   }
 
@@ -59,4 +56,37 @@ export const getSeverityColor = (severity: IncidentSeverity) => {
     default:
       return "bg-gray-500";
   }
+};
+
+// +/- 0.009 degrees for latitude +/-0.0118 degrees for longitude in 1km radius
+const generateRandomCoordinates = (coords: number[]): [number, number] => {
+  const [long, lat] = coords;
+  const latAdjustment = () => (Math.random() - 0.5) * 0.018;
+  const lonAdjustment = () => (Math.random() - 0.5) * 0.0236;
+
+  const newLongitude = long + lonAdjustment();
+  const newLatitude = lat + latAdjustment();
+
+  return [newLongitude, newLatitude];
+};
+
+export const createNewIncident = () => {
+  const randomIdx = Math.floor(Math.random() * mockEvents.length);
+  const mockIncident = mockEvents[randomIdx];
+
+  // To take one of the pre-written title / description / type from mocks
+  // Overwriting id / location / severity
+  const location = generateRandomCoordinates(mockIncident.location);
+  const timestamp = new Date();
+  const severity = generateRandomNumber(3);
+
+  const newIncident = {
+    ...mockIncident,
+    id: Date.now(),
+    location,
+    timestamp,
+    severity,
+  };
+
+  return newIncident;
 };

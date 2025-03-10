@@ -1,47 +1,47 @@
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
   SheetHeader,
   SheetTitle,
-  SheetTrigger,
 } from "@/components/ui/sheet";
 import { useIncidents } from "./IncidentsContext";
 import { formatDistanceToNow } from "date-fns";
 import { AlertCircle } from "lucide-react";
 import { getSeverityColor } from "@/lib/helpers";
-import { useEffect, useState } from "react";
+import { useRef, useEffect } from "react";
 
-export const EventSheet = () => {
-  const { incidents, selectedIncident, setSelectedIncident } = useIncidents();
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+export const IncidentSidebar = () => {
+  const { incidents, selectedIncidentId, setSelectedIncidentId } =
+    useIncidents();
+  const selectedCardRef = useRef<HTMLDivElement | null>(null);
+
+  const isOpen = !!selectedIncidentId;
 
   useEffect(() => {
-    if (selectedIncident) {
-      setIsOpen(true);
+    if (selectedIncidentId && selectedCardRef.current) {
+      selectedCardRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
     }
-  }, [selectedIncident]);
+  }, [selectedIncidentId]);
 
   return (
-    <Sheet modal={false} open={isOpen} onOpenChange={setIsOpen}>
-      <SheetTrigger className="relative z-100">{">>>>"}</SheetTrigger>
-      <SheetContent
-        side="left"
-        onPointerDownOutside={(e) => {
-          e.preventDefault();
-          setSelectedIncident(null);
-        }}
-      >
+    <Sheet modal={false} open={isOpen}>
+      <SheetContent side="left" className="overflow-y-scroll">
         <SheetHeader>
-          <SheetTitle>Live Events Near You</SheetTitle>
-          <SheetDescription>You can see blah blah</SheetDescription>
-          <div className="flex flex-col-reverse gap-3 mt-4 h-200 overflow-y-scroll">
+          <SheetTitle className="text-lg">Incidents in the Area</SheetTitle>
+          <div className="flex flex-col-reverse gap-3 mt-4">
             {incidents.map((incident) => {
               return (
                 <div
+                  ref={
+                    selectedIncidentId === incident.id ? selectedCardRef : null
+                  }
+                  onClick={() => setSelectedIncidentId(incident.id)}
                   key={incident.id}
                   className={`border-1  p-4 rounded-md ${
-                    selectedIncident === incident.id
+                    selectedIncidentId === incident.id
                       ? "border-blue-500 bg-blue-200"
                       : "border-gray-500"
                   }`}
@@ -58,6 +58,12 @@ export const EventSheet = () => {
                   <p className="text-sm text-gray-600 mb-2">{`${formatDistanceToNow(
                     incident.timestamp
                   )} ago`}</p>
+                  {selectedIncidentId === incident.id && (
+                    <p className="text-sm">
+                      More information regarding this incident. What people saw.
+                      What neighborhood. Ipsum Lorem.
+                    </p>
+                  )}
                 </div>
               );
             })}

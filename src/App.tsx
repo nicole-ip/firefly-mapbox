@@ -3,9 +3,10 @@ import Map, { GeolocateControl } from "react-map-gl/mapbox";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "./App.css";
 
-import { EventSheet } from "@/components/EventSheet";
-import { Markers } from "@/components/Markers";
 import IncidentsProvider from "@/components/IncidentsContext";
+import { IncidentSidebar } from "@/components/IncidentSidebar";
+import { Markers } from "@/components/Markers";
+import { NewIncident } from "@/components/NewIncident";
 
 function App() {
   const geoControlRef = useRef<mapboxgl.GeolocateControl>(null);
@@ -24,8 +25,9 @@ function App() {
     >
       <GeolocateControl ref={geoControlRef} />
       <IncidentsProvider isMoveEnd={isMoveEnd}>
-        <EventSheet />
+        <IncidentSidebar />
         <Markers />
+        <NewIncident />
       </IncidentsProvider>
     </Map>
   );
